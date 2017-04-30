@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import code.model.dao.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -17,19 +18,14 @@ import java.util.regex.Pattern;
 /**
  *
  */
-//@Service
-@Component  // LAB4
+@Service
 public class UserServiceImpl implements UserService {
 
     private static final Logger LOGGER = Logger.getLogger(UserServiceImpl.class);
 
-    private UserDAO userDAO; // LAB4
+    private UserDAO userDAO;
 
-    public UserDAO getUserDAO() {
-        return userDAO;
-    }
-
-    //@Autowired
+    @Autowired
     public void setUserDAO(UserDAO userDAO) {
         this.userDAO = userDAO;
     }
@@ -39,7 +35,7 @@ public class UserServiceImpl implements UserService {
         User user = userDAO.findUserByLoginAndPassword(login, password);
         LOGGER.debug("user: " + user);
 
-        if (user == null || user.getLocked()==1) {
+        if (user == null) {
             return null;
         }
         LOGGER.debug("user not blocked");
@@ -78,6 +74,10 @@ public class UserServiceImpl implements UserService {
         userDAO.addUser(user);
     }
 
+    @Override
+    public void lockOrUnlockUser(String nick,int lock){
+        userDAO.lockOrUnlockUser(nick,lock);
+    }
     @Override
     public HashSet<User> getAllUsers(){
         HashSet<User> users = userDAO.getAllUsers();

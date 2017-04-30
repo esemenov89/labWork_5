@@ -1,11 +1,5 @@
 package code.controllers.filters;
 
-import code.controllers.WelcomeServlet;
-import code.model.pojo.User;
-import code.services.UserService;
-import code.services.UserServiceImpl;
-import org.apache.log4j.Logger;
-
 import java.io.IOException;
 
 import javax.servlet.Filter;
@@ -21,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  */
 public class WhiteList implements Filter {
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 
@@ -29,9 +24,7 @@ public class WhiteList implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
                          FilterChain filterChain) throws IOException, ServletException {
-
-        String userLogin = (String) ((HttpServletRequest) servletRequest)
-                .getSession().getAttribute("userLogin");
+        String userLogin = (String) ((HttpServletRequest) servletRequest).getSession().getAttribute("userLogin");
 
         if(userLogin==null){
             ((HttpServletResponse)servletResponse).sendRedirect(((HttpServletRequest) servletRequest).getContextPath() + "/");

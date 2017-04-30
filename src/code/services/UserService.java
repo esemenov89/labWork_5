@@ -13,4 +13,5 @@ public interface UserService {
     HashSet<User> getAllUsers();
     User validateUser(String login, String password, String mail);
     void addUser(User user);
+    void lockOrUnlockUser(String nick,int lock);
 }

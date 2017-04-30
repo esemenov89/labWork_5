@@ -1,8 +1,9 @@
 package code.model.dao;
 
-import code.model.ConnectionPool;
+import code.services.ConnectionPool;
 import code.model.pojo.StorageUnit;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.HashSet;
@@ -10,6 +11,7 @@ import java.util.HashSet;
 /**
  * Created by admin on 22.04.2017.
  */
+@Repository
 public class StorageUnitDAOImpl implements StorageUnitDAO {
 
     private static final Logger LOGGER = Logger.getLogger(StorageUnitDAOImpl.class);
@@ -33,6 +35,29 @@ public class StorageUnitDAOImpl implements StorageUnitDAO {
             LOGGER.error(e);
         }
         return storageUnits;
+    }
+
+    @Override
+    public void addStorageUnit(StorageUnit storageUnit) {
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection
+                     .prepareStatement( "INSERT INTO ELCATALOG(AUTHOR,TITLE,PUBLISHING_HOUSE,CITY,YEAR," +
+                             "PAGES_COUNT,ISN,TEXT) VALUES(?,?,?,?,?,?,?,?)")) {
+            statement.setString(1,storageUnit.getAuthor());
+            statement.setString(2,storageUnit.getTitle());
+            statement.setString(3,storageUnit.getPublishingHouse());
+            statement.setString(4,storageUnit.getCity());
+            statement.setInt(5,storageUnit.getYear());
+            statement.setInt(6,storageUnit.getPagesCount());
+            statement.setString(7,storageUnit.getIsn());
+            statement.setString(8,storageUnit.getText());
+            statement.executeQuery();
+        } catch (SQLException e) {
+            LOGGER.error(e);
+        }
+        catch (Exception e){
+            LOGGER.error(e);
+        }
     }
 
     public StorageUnit getStorageUnitByISN(String isn){
@@ -67,8 +92,6 @@ public class StorageUnitDAOImpl implements StorageUnitDAO {
             preparedStatement=connection.prepareStatement("DELETE FROM ELCATALOG WHERE ISN=?");
             preparedStatement.setString(1, isn);
             preparedStatement.execute();
-
-
         } catch (SQLException e) {
             LOGGER.error(e);
         }

@@ -13,4 +13,5 @@ public interface UserDAO {
     User findUserByMail(String mail);
     HashSet<User> getAllUsers();
     void addUser(User user);
+    void lockOrUnlockUser(String nick,int lock);
 }

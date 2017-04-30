@@ -18,9 +18,7 @@ public class RegisterFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
                          FilterChain filterChain) throws IOException, ServletException {
 
-        String userLogin = (String) ((HttpServletRequest) servletRequest)
-                .getSession().getAttribute("userLogin");
-
+        String userLogin = (String) ((HttpServletRequest) servletRequest).getSession().getAttribute("userLogin");
         if(userLogin!=null){
             ((HttpServletResponse)servletResponse).sendRedirect(((HttpServletRequest) servletRequest).getContextPath() + "/");
         }

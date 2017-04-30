@@ -69,5 +69,4 @@ public class User {
                 ", locked=" + locked +
                 '}';
     }
-
 }

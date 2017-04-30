@@ -6,7 +6,7 @@
     <display-name>Archetype Created Web Application</display-name>
     <servlet>
         <servlet-name>WelcomeServlet</servlet-name>
-        <servlet-class>code.controllers.WelcomeServlet</servlet-class>
+        <servlet-class>code.controllers.old.servlets.WelcomeServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>WelcomeServlet</servlet-name>

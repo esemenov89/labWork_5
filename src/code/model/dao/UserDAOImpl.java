@@ -11,13 +11,16 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.HashSet;
 
-import code.model.ConnectionPool;
+import code.services.ConnectionPool;
 
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  *
  */
+@Repository
 public class UserDAOImpl implements UserDAO {
 
     private static final Logger LOGGER = Logger.getLogger(UserDAOImpl.class);
@@ -42,6 +45,7 @@ public class UserDAOImpl implements UserDAO {
         }
         return user;
     }
+
     @Override
     public User findUserByLogin(String login) {
         User user = null;
@@ -62,6 +66,23 @@ public class UserDAOImpl implements UserDAO {
         }
         return user;
     }
+    @Override
+    public void lockOrUnlockUser(String login,int lock){
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection
+                     .prepareStatement( "UPDATE USERS SET locked=? WHERE NICK = ?")) {
+
+            statement.setInt(1,lock);
+            statement.setString(2,login);
+            statement.executeQuery();
+        } catch (SQLException e) {
+            LOGGER.error(e);
+        }
+        catch (Exception e){
+            LOGGER.error(e);
+        }
+    }
+
     @Override
     public User findUserByMail(String mail) {
         User user = null;
@@ -93,10 +114,7 @@ public class UserDAOImpl implements UserDAO {
             statement.setString(3,user.getPassword());
             statement.setInt(4,user.getAccountType());
             statement.setInt(5,user.getLocked());
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                user = createEntity(resultSet);
-            }
+            statement.executeQuery();
         } catch (SQLException e) {
             LOGGER.error(e);
         }

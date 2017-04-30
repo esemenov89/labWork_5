@@ -11,4 +11,7 @@ public interface StorageUnitService {
     HashSet<StorageUnit> getAllStorageUnits();
     StorageUnit getStorageUnitByISN(String isn);
     void delStorageUnitByISN(String isn);
+    StorageUnit validateStorageUnit(String author, String title, String publishingHouse, String city, String year,
+                                    String pagesCount, String isn, String text);
+    void addStorageUnit(StorageUnit storageUnit);
 }
